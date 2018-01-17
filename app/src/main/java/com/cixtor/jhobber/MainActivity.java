@@ -1,9 +1,10 @@
 package com.cixtor.jhobber;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,39 +13,41 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.maps.MapFragment;
-
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
-    private Toolbar toolbar;
-    private DrawerLayout mDrawer;
-    private NavigationView nvDrawer;
+public class MainActivity extends AppCompatActivity implements
+        HomeFragment.OnFragmentInteractionListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /* Set a Toolbar to replace the ActionBar */
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        /* Set a Toolbar to replace the ActionBar. */
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /* Find and attach a toggle event to our Drawer view */
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.addDrawerListener(toggle);
+        /* Find and attach a toggle event to our Drawer view. */
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        /* Setup Drawer view */
-        nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        /* Setup Drawer view and check first fragment. */
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nav_view);
         nvDrawer.setNavigationItemSelectedListener(this);
+        nvDrawer.setCheckedItem(R.id.nav_home);
+
+        /* Opens initial fragment. */
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.flContent, new HomeFragment());
+        ft.commit();
     }
 
     @Override
     public void onBackPressed() {
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDrawer.closeDrawer(GravityCompat.START);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        /* Inflate the menu; this adds items to the action bar if it is present. */
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -75,47 +78,36 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        /* Create a new Fragment and specify the pieces to show */
+        int id = item.getItemId();
+
         Fragment fragment = null;
-        Class fragmentClass = null;
 
-        /* Handle navigation view item clicks here. */
-        switch (item.getItemId()) {
-            case R.id.nav_home:
-                fragmentClass = HomeFragment.class;
-                break;
+        if (id == R.id.nav_home) {
+            fragment = new HomeFragment();
+        } else if (id == R.id.nav_map) {
 
-            case R.id.nav_map:
-                fragmentClass = MapFragment.class;
-                break;
+        } else if (id == R.id.nav_profile) {
 
-            case R.id.nav_profile:
-                fragmentClass = ProfileFragment.class;
-                break;
+        } else if (id == R.id.nav_settings) {
 
-            case R.id.nav_settings:
-                fragmentClass = SettingsFragment.class;
-                break;
         }
 
-        /* abort invalid fragments */
-        if (fragmentClass == null) {
-            return false;
+        /* Fragment content switching. */
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.flContent, fragment);
+            ft.commit();
         }
 
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
-        item.setChecked(true);
-        setTitle(item.getTitle());
-        mDrawer.closeDrawers();
-
+        /* Close the drawer after touching an item. */
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(String title) {
+        /* Replace the toolbar title based on current fragment. */
+        getSupportActionBar().setTitle(title);
     }
 }
