@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements
         HomeFragment.OnFragmentInteractionListener,
+        MapFragment.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements
         if (id == R.id.nav_home) {
             fragment = new HomeFragment();
         } else if (id == R.id.nav_map) {
-
+            fragment = new MapFragment();
         } else if (id == R.id.nav_profile) {
 
         } else if (id == R.id.nav_settings) {
