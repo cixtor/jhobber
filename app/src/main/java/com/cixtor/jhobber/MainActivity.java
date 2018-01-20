@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements
         HomeFragment.OnFragmentInteractionListener,
         MapFragment.OnFragmentInteractionListener,
         ProfileFragment.OnFragmentInteractionListener,
+        SettingsFragment.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_profile) {
             fragment = new ProfileFragment();
         } else if (id == R.id.nav_settings) {
-
+            fragment = new SettingsFragment();
         }
 
         /* Fragment content switching. */
