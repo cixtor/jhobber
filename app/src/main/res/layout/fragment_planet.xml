@@ -2,12 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cixtor.jhobber.HomeFragment">
+    tools:context="com.cixtor.jhobber.PlanetFragment">
 
-    <TextView
-        android:gravity="center"
+    <FrameLayout
+        android:id="@+id/googleMap"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Map Fragment" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
