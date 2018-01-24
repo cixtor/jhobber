@@ -34,6 +34,25 @@ public class JobPost {
     public static ArrayList<JobPost> getJobPosts() {
         ArrayList<JobPost> posts = new ArrayList<JobPost>();
 
+        posts.add(new JobPost(
+                "Google Inc.",
+                "Senior Software Engineer",
+                "C++, Java, Go, Python, Node.js",
+                R.mipmap.job_google_logo
+        ));
+        posts.add(new JobPost(
+                "Adobe Systems Inc.",
+                "Senior Software Engineer",
+                "C++, Java, C#",
+                R.mipmap.job_adobe_logo
+        ));
+        posts.add(new JobPost(
+                "Slack Technologies",
+                "Senior Software Engineer",
+                "Node.js, JavaScript, Electron",
+                R.mipmap.job_slack_logo
+        ));
+
         return posts;
     }
 }
