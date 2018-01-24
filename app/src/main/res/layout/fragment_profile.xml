@@ -3,12 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBlack"
     tools:context=".ProfileFragment">
 
-    <TextView
-        android:gravity="center"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Profile Fragment" />
+        android:layout_height="300dp"
+        android:background="@mipmap/user_avatar_bg"
+        android:alpha="0.6">
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/nav_header_vertical_spacing"
+            android:src="@mipmap/user_avatar_fg"
+            android:layout_marginTop="40dp"/>
+
+        <FrameLayout
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/colorAccentAlpha"
+            android:paddingTop="14dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_fullname"
+                android:textColor="@color/colorWhite"
+                android:textSize="32dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_jobtitle"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="40dp"
+                android:textSize="16dp" />
+        </FrameLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_marginTop="300dp"
+        android:layout_width="match_parent"
+        android:layout_height="267dp"
+        android:background="@color/colorWhite">
+
+        <ListView
+            android:id="@+id/job_posts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true" />
+
+    </LinearLayout>
 
 </FrameLayout>

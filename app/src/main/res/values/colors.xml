@@ -5,4 +5,5 @@
     <color name="colorPrimary">#383152</color>
     <color name="colorPrimaryDark">#282240</color>
     <color name="colorAccent">#847cf1</color>
+    <color name="colorAccentAlpha">#70847cf1</color>
 </resources>
