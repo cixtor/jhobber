@@ -1,9 +1,8 @@
-package com.cixtor.jhobber;
+package com.cixtor.jhobber.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,11 +12,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements
-        HomeFragment.OnFragmentInteractionListener,
-        PlanetFragment.OnFragmentInteractionListener,
-        ProfileFragment.OnFragmentInteractionListener,
-        SettingsFragment.OnFragmentInteractionListener,
+import com.cixtor.jhobber.R;
+import com.cixtor.jhobber.fragment.Home;
+import com.cixtor.jhobber.fragment.Planet;
+import com.cixtor.jhobber.fragment.Profile;
+import com.cixtor.jhobber.fragment.Settings;
+
+public class Main extends AppCompatActivity implements
+        Home.OnFragmentInteractionListener,
+        Planet.OnFragmentInteractionListener,
+        Profile.OnFragmentInteractionListener,
+        Settings.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -42,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements
 
         /* Opens initial fragment. */
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flContent, new HomeFragment());
+        ft.replace(R.id.flContent, new Home());
         ft.commit();
     }
 
@@ -86,13 +91,13 @@ public class MainActivity extends AppCompatActivity implements
         Fragment fragment = null;
 
         if (id == R.id.nav_home) {
-            fragment = new HomeFragment();
+            fragment = new Home();
         } else if (id == R.id.nav_map) {
-            fragment = new PlanetFragment();
+            fragment = new Planet();
         } else if (id == R.id.nav_profile) {
-            fragment = new ProfileFragment();
+            fragment = new Profile();
         } else if (id == R.id.nav_settings) {
-            fragment = new SettingsFragment();
+            fragment = new Settings();
         }
 
         /* Fragment content switching. */

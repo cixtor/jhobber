@@ -1,4 +1,6 @@
-package com.cixtor.jhobber;
+package com.cixtor.jhobber.model;
+
+import com.cixtor.jhobber.R;
 
 import java.util.ArrayList;
 

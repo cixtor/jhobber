@@ -1,4 +1,4 @@
-package com.cixtor.jhobber;
+package com.cixtor.jhobber.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,13 +10,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.cixtor.jhobber.model.JobPost;
+import com.cixtor.jhobber.model.JobPostAdapter;
+import com.cixtor.jhobber.R;
+
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment {
+public class Profile extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ProfileFragment() {
+    public Profile() {
     }
 
     @Override

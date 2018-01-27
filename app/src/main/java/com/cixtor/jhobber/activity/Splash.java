@@ -1,11 +1,13 @@
-package com.cixtor.jhobber;
+package com.cixtor.jhobber.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class SplashActivity extends AppCompatActivity {
+import com.cixtor.jhobber.R;
+
+public class Splash extends AppCompatActivity {
     private Handler mHandler = new Handler();
     private final int LAUNCH_TIMEOUT = 2000;
 
@@ -17,7 +19,7 @@ public class SplashActivity extends AppCompatActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                Intent i = new Intent(Splash.this, Main.class);
                 startActivity(i);
             }
         }, LAUNCH_TIMEOUT);

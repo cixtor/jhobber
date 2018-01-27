@@ -1,4 +1,4 @@
-package com.cixtor.jhobber;
+package com.cixtor.jhobber.fragment;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cixtor.jhobber.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -19,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class PlanetFragment extends Fragment implements OnMapReadyCallback {
+public class Planet extends Fragment implements OnMapReadyCallback {
 
     private MapView mMapView;
     private GoogleMap mGoogleMap;
@@ -31,7 +32,7 @@ public class PlanetFragment extends Fragment implements OnMapReadyCallback {
     private final double GOOGLE_MAP_LATITUDE = 49.2850668662163;
     private final double GOOGLE_MAP_LONGITUDE = -123.11317313882061;
 
-    public PlanetFragment() {
+    public Planet() {
     }
 
     @Override

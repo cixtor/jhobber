@@ -1,4 +1,4 @@
-package com.cixtor.jhobber;
+package com.cixtor.jhobber.model;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.cixtor.jhobber.R;
 
 public class JobPostAdapter extends ArrayAdapter<JobPost> {
     public JobPostAdapter(Context context, ArrayList<JobPost> posts) {

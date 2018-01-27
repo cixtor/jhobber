@@ -1,4 +1,4 @@
-package com.cixtor.jhobber;
+package com.cixtor.jhobber.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class SettingsFragment extends Fragment {
+import com.cixtor.jhobber.R;
+
+public class Home extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public SettingsFragment() {
+    public Home() {
     }
 
     @Override
@@ -22,10 +24,10 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mListener != null) {
-            mListener.onFragmentInteraction("Settings");
+            mListener.onFragmentInteraction("Home");
         }
 
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
