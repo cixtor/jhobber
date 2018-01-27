@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Jhobber</string>
-    <string name="app_subname">Tinder For Jobs</string>
     <string name="app_author">Yorman Arias</string>
     <string name="app_website">www.cixtor.com</string>
     <string name="app_sponsor">Sponsor — CICCC</string>
     <string name="app_copyright">Copyright © - 2018</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_settings">Settings</string>
+    <string name="navigation_logout">Log Out</string>
     <string name="user_fullname">Cat Damon Pawclaw</string>
     <string name="user_jobtitle">Senior Software Engineer</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_map">Map</string>
+    <string name="drawer_profile">Profile</string>
+    <string name="drawer_settings">Settings</string>
+    <string name="drawer_about">About</string>
 </resources>

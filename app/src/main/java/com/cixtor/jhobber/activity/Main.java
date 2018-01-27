@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.cixtor.jhobber.fragment.About;
 import com.cixtor.jhobber.R;
 import com.cixtor.jhobber.fragment.Home;
 import com.cixtor.jhobber.fragment.Planet;
@@ -19,6 +20,7 @@ import com.cixtor.jhobber.fragment.Profile;
 import com.cixtor.jhobber.fragment.Settings;
 
 public class Main extends AppCompatActivity implements
+        About.OnFragmentInteractionListener,
         Home.OnFragmentInteractionListener,
         Planet.OnFragmentInteractionListener,
         Profile.OnFragmentInteractionListener,
@@ -36,14 +38,19 @@ public class Main extends AppCompatActivity implements
 
         /* Find and attach a toggle event to our Drawer view. */
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this,
+                drawer,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         /* Setup Drawer view and check first fragment. */
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.nav_view);
         nvDrawer.setNavigationItemSelectedListener(this);
-        nvDrawer.setCheckedItem(R.id.nav_home);
+        nvDrawer.setCheckedItem(R.id.nav_profile);
 
         /* Opens initial fragment. */
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -64,7 +71,7 @@ public class Main extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         /* Inflate the menu; this adds items to the action bar if it is present. */
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.topbar, menu);
         return true;
     }
 
@@ -98,6 +105,8 @@ public class Main extends AppCompatActivity implements
             fragment = new Profile();
         } else if (id == R.id.nav_settings) {
             fragment = new Settings();
+        } else if (id == R.id.nav_about) {
+            fragment = new About();
         }
 
         /* Fragment content switching. */
