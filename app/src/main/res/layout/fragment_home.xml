@@ -6,4 +6,104 @@
     android:background="@color/colorPrimary"
     tools:context=".fragment.Home">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:gravity="center_horizontal"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/signup_username"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/colorWidget"
+            android:backgroundTint="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/signup_button_auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/signup_button"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorAccent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="300dp">
+        <View
+            android:layout_height="1dp"
+            android:layout_width="100dp"
+            android:background="@color/colorWidget"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="italic"
+            android:textColor="@color/colorWidget"
+            android:text="@string/signup_separator" />
+        <View
+            android:layout_height="1dp"
+            android:layout_width="100dp"
+            android:background="@color/colorWidget"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="330dp"
+        android:padding="20dp">
+        <EditText
+            android:id="@+id/firstname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/signup_firstname"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/colorWidget"
+            android:backgroundTint="@color/colorAccent" />
+
+        <EditText
+            android:id="@+id/lastname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/signup_lastname"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/colorWidget"
+            android:backgroundTint="@color/colorAccent" />
+
+        <EditText
+            android:id="@+id/occupation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/signup_occupation"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/colorWidget"
+            android:backgroundTint="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/signup_button_manual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/signup_button"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/colorAccent" />
+    </LinearLayout>
 </FrameLayout>
