@@ -30,12 +30,13 @@
             android:backgroundTint="@color/colorAccent" />
 
         <Button
+            style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/signup_button_auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/signup_button"
             android:textColor="@color/colorPrimary"
-            android:background="@color/colorAccent" />
+            android:padding="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -69,7 +70,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="330dp"
+        android:layout_marginTop="320dp"
         android:padding="20dp">
         <EditText
             android:id="@+id/firstname"
@@ -99,11 +100,12 @@
             android:backgroundTint="@color/colorAccent" />
 
         <Button
+            style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/signup_button_manual"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/signup_button"
             android:textColor="@color/colorPrimary"
-            android:background="@color/colorAccent" />
+            android:padding="20dp" />
     </LinearLayout>
 </FrameLayout>
