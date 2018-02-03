@@ -1,5 +1,7 @@
 package com.cixtor.jhobber.model;
 
+import android.util.Log;
+
 import com.cixtor.jhobber.R;
 
 import java.util.ArrayList;
@@ -55,6 +57,15 @@ public class JobPost {
                 R.mipmap.job_slack_logo
         ));
 
+        for (JobPost post : posts) {
+            Log.d("JOB_POST", post.toString());
+        }
+
         return posts;
+    }
+
+    @Override
+    public String toString() {
+        return "JobPost{company='" + company + "', title='" + title + "'}";
     }
 }

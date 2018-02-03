@@ -7,19 +7,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.cixtor.jhobber.fragment.About;
 import com.cixtor.jhobber.R;
+import com.cixtor.jhobber.fragment.About;
 import com.cixtor.jhobber.fragment.Home;
 import com.cixtor.jhobber.fragment.Planet;
 import com.cixtor.jhobber.fragment.Profile;
 import com.cixtor.jhobber.fragment.Settings;
 
-public class Main extends AppCompatActivity implements
+public class Main extends Base implements
         About.OnFragmentInteractionListener,
         Home.OnFragmentInteractionListener,
         Planet.OnFragmentInteractionListener,
@@ -47,10 +46,7 @@ public class Main extends AppCompatActivity implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        /* Setup Drawer view and check first fragment. */
-        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nav_view);
-        nvDrawer.setNavigationItemSelectedListener(this);
-        nvDrawer.setCheckedItem(R.id.nav_profile);
+        this.setDrawerState();
 
         /* Opens initial fragment. */
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -126,5 +122,21 @@ public class Main extends AppCompatActivity implements
     public void onFragmentInteraction(String title) {
         /* Replace the toolbar title based on current fragment. */
         getSupportActionBar().setTitle(title);
+    }
+
+    private void setDrawerState() {
+        /* Setup Drawer view and check first fragment. */
+        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+
+        nvDrawer.setNavigationItemSelectedListener(this);
+
+        /* show signup form */
+        if (!this.accountExists) {
+            nvDrawer.setCheckedItem(R.id.nav_home);
+            Menu menu = nvDrawer.getMenu();
+            MenuItem item = menu.findItem(R.id.nav_home);
+            item.setEnabled(true);
+            return;
+        }
     }
 }
