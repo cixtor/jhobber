@@ -1,12 +1,21 @@
 package com.cixtor.jhobber.model;
 
 public class User {
+    private String mUUID;
     private String mFirstName;
     private String mLastName;
     private String mOccupation;
     private String mAvatar;
 
     public User() {
+    }
+
+    public String getUUID() {
+        return mUUID;
+    }
+
+    public void setUUID(String uuid) {
+        mUUID = uuid;
     }
 
     public String getFirstName() {
@@ -39,5 +48,16 @@ public class User {
 
     public void setAvatar(String avatar) {
         mAvatar = avatar;
+    }
+
+    @Override
+    public String toString() {
+        return "User{"
+                + "uuid='" + mUUID + "', "
+                + "firstname='" + mFirstName + "', "
+                + "mLastName='" + mLastName + "', "
+                + "mOccupation='" + mOccupation + "', "
+                + "mAvatar='" + mAvatar
+                + "'}";
     }
 }
