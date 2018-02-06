@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cixtor.jhobber.model.User;
 
@@ -31,46 +31,52 @@ public class Base extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.userAccount = this.loadLocalData();
+        this.userAccount = new User();
 
         this.requestQueue = Volley.newRequestQueue(this);
-    }
-
-    public boolean isValidAccount() {
-        return this.userAccount.getUUID() != "";
-    }
-
-    public String getUserUUID() {
-        return this.userAccount.getUUID();
-    }
-
-    public void addRequestToQueue(JsonObjectRequest obj) {
-        this.requestQueue.add(obj);
-    }
-
-    private User loadLocalData() {
-        User user = new User();
 
         try {
-            String content = this.getLocalDataContent();
-
-            JSONObject obj = new JSONObject(content);
-
-            /* database is corrupt */
-            if (!obj.has("uuid")) {
-                return user;
-            }
-
-            user.setUUID(obj.getString("uuid"));
-            user.setFirstName(obj.getString("firstname"));
-            user.setLastName(obj.getString("lastname"));
-            user.setOccupation(obj.getString("occupation"));
-            user.setAvatar(obj.getString("avatar"));
+            this.loadLocalData();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
-        return user;
+    public boolean isValidAccount() {
+        return this.userAccount.isValid();
+    }
+
+    public User getUserAccount() {
+        return this.userAccount;
+    }
+
+    public void addRequestToQueue(StringRequest obj) {
+        this.requestQueue.add(obj);
+    }
+
+    private void loadLocalData() throws JSONException {
+        String content = this.getLocalDataContent();
+        JSONObject obj = new JSONObject(content);
+        this.setUserAccount(obj);
+    }
+
+    public void setUserAccount(JSONObject obj) throws JSONException {
+        /* database is corrupt */
+        if (!obj.has("uuid")) {
+            return;
+        }
+
+        this.userAccount.setUUID(obj.getString("uuid"));
+
+        /* stop if the UUID is invalid */
+        if (!this.userAccount.isValid()) {
+            return;
+        }
+
+        this.userAccount.setFirstName(obj.getString("firstname"));
+        this.userAccount.setLastName(obj.getString("lastname"));
+        this.userAccount.setOccupation(obj.getString("occupation"));
+        this.userAccount.setAvatar(obj.getString("avatar"));
     }
 
     public boolean hasLocalStorage() {
