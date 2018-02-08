@@ -48,15 +48,13 @@ public class Main extends Base implements
 
         this.setDrawerState();
 
-        /* Opens initial fragment. */
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flContent, new Home());
-        ft.commit();
+        this.setInitialFragment();
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -125,18 +123,35 @@ public class Main extends Base implements
     }
 
     private void setDrawerState() {
-        /* Setup Drawer view and check first fragment. */
         NavigationView nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = nvDrawer.getMenu();
 
         nvDrawer.setNavigationItemSelectedListener(this);
 
-        /* show signup form */
-        if (!this.accountExists) {
-            nvDrawer.setCheckedItem(R.id.nav_home);
-            Menu menu = nvDrawer.getMenu();
-            MenuItem item = menu.findItem(R.id.nav_home);
-            item.setEnabled(true);
+        /* account exists; show profile */
+        if (this.isValidAccount()) {
+            nvDrawer.setCheckedItem(R.id.nav_profile);
+            menu.findItem(R.id.nav_map).setEnabled(true);
+            menu.findItem(R.id.nav_profile).setEnabled(true);
+            menu.findItem(R.id.nav_settings).setEnabled(true);
             return;
         }
+
+        nvDrawer.setCheckedItem(R.id.nav_home);
+        menu.findItem(R.id.nav_home).setEnabled(true);
+    }
+
+    private void setInitialFragment() {
+        Fragment fragment;
+
+        if (this.isValidAccount()) {
+            fragment = new Profile();
+        } else {
+            fragment = new Home();
+        }
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.flContent, fragment);
+        ft.commit();
     }
 }
