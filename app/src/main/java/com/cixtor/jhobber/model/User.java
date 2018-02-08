@@ -6,8 +6,10 @@ public class User {
     private String mLastName;
     private String mOccupation;
     private String mAvatar;
+    private boolean mValid;
 
     public User() {
+        mValid = false;
     }
 
     public String getUUID() {
@@ -15,7 +17,10 @@ public class User {
     }
 
     public void setUUID(String uuid) {
-        mUUID = uuid;
+        if (uuid.matches("[0-9a-zA-Z]{8}(\\-[0-9a-zA-Z]{4}){3}\\-[0-9a-zA-Z]{12}")) {
+            mValid = true;
+            mUUID = uuid;
+        }
     }
 
     public String getFirstName() {
@@ -48,6 +53,10 @@ public class User {
 
     public void setAvatar(String avatar) {
         mAvatar = avatar;
+    }
+
+    public boolean isValid() {
+        return mValid;
     }
 
     @Override
