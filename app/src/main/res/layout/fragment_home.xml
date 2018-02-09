@@ -10,11 +10,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:gravity="center_vertical"
+        android:paddingTop="50dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
         <ImageView
             android:id="@+id/appLogo"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="140dp"
             android:gravity="center_horizontal"
             android:contentDescription="@string/app_name"
             android:src="@mipmap/ic_launcher_round" />
@@ -23,20 +26,22 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:paddingTop="50dp"
+            android:maxLines="1"
+            android:inputType="text"
             android:hint="@string/signup_username"
             android:textColor="@color/colorAccent"
             android:textColorHint="@color/colorWidget"
             android:backgroundTint="@color/colorAccent" />
 
         <Button
+            android:id="@+id/signupBtn"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:id="@+id/signup_button_auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="20dp"
             android:text="@string/signup_button"
-            android:textColor="@color/colorPrimary"
-            android:padding="20dp" />
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,10 +49,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:layout_marginTop="300dp">
+        android:layout_marginTop="350dp">
         <View
             android:layout_height="1dp"
-            android:layout_width="100dp"
+            android:layout_width="76dp"
             android:background="@color/colorWidget"
             android:layout_gravity="center"/>
         <TextView
@@ -58,54 +63,11 @@
             android:layout_gravity="center"
             android:textStyle="italic"
             android:textColor="@color/colorWidget"
-            android:text="@string/signup_separator" />
+            android:text="@string/signup_footer" />
         <View
             android:layout_height="1dp"
-            android:layout_width="100dp"
+            android:layout_width="76dp"
             android:background="@color/colorWidget"
             android:layout_gravity="center"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="320dp"
-        android:padding="20dp">
-        <EditText
-            android:id="@+id/firstname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/signup_firstname"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/colorWidget"
-            android:backgroundTint="@color/colorAccent" />
-
-        <EditText
-            android:id="@+id/lastname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/signup_lastname"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/colorWidget"
-            android:backgroundTint="@color/colorAccent" />
-
-        <EditText
-            android:id="@+id/occupation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/signup_occupation"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/colorWidget"
-            android:backgroundTint="@color/colorAccent" />
-
-        <Button
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:id="@+id/signup_button_manual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/signup_button"
-            android:textColor="@color/colorPrimary"
-            android:padding="20dp" />
     </LinearLayout>
 </FrameLayout>
