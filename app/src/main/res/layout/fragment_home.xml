@@ -23,7 +23,7 @@
             android:src="@mipmap/ic_launcher_round" />
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/signupUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="50dp"
@@ -35,7 +35,7 @@
             android:backgroundTint="@color/colorAccent" />
 
         <Button
-            android:id="@+id/signupBtn"
+            android:id="@+id/signupButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

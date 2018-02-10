@@ -21,4 +21,7 @@
     <string name="signup_lastname">Lastname</string>
     <string name="signup_occupation">Occupation</string>
     <string name="signup_button">Create Account</string>
+    <string name="signup_creating">Creating...</string>
+    <string name="signup_empty_username">Username is empty, try again.</string>
+    <string name="signup_account_created">Account successfully created.</string>
 </resources>

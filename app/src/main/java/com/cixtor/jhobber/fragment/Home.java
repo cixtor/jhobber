@@ -10,26 +10,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.cixtor.jhobber.R;
-import com.cixtor.jhobber.activity.Base;
+import com.cixtor.jhobber.activity.Main;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Home extends Fragment implements View.OnClickListener {
     public final String TAG = "JHOBBER_HOME";
 
     private OnFragmentInteractionListener mListener;
-    private EditText username;
-    private Button signupBtn;
+    private EditText mSignupUsername;
+    private Button mSignupButton;
 
     public Home() {
     }
@@ -47,10 +43,10 @@ public class Home extends Fragment implements View.OnClickListener {
 
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        this.username = (EditText) v.findViewById(R.id.username);
-        this.signupBtn = (Button) v.findViewById(R.id.signupBtn);
+        this.mSignupUsername = (EditText) v.findViewById(R.id.signupUsername);
+        this.mSignupButton = (Button) v.findViewById(R.id.signupButton);
 
-        signupBtn.setOnClickListener(this);
+        mSignupButton.setOnClickListener(this);
 
         return v;
     }
@@ -86,72 +82,74 @@ public class Home extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void enableSignupButton() {
+        mSignupButton.setEnabled(true);
+        mSignupButton.setText(R.string.signup_button);
+    }
+
+    private void disableSignupButton() {
+        mSignupButton.setEnabled(false);
+        mSignupButton.setText(R.string.signup_creating);
+    }
+
     private void onClickSignup(View v, int buttonId) throws JSONException {
-        if (buttonId != R.id.signupBtn) {
+        if (buttonId != R.id.signupButton) {
             return;
         }
 
-        Base parent = (Base) this.getActivity();
+        this.disableSignupButton();
 
-        StringRequest obj = new StringRequest(
-                Request.Method.POST,
-                parent.WEB_SERVICE + "/signup",
-                this.onClickSignupResponseListener(parent),
-                this.onClickSignupErrorListener()
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", username.getText().toString());
-                return params;
-            }
+        Main parent = (Main) this.getActivity();
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-        };
+        String username = mSignupUsername.getText().toString();
+
+        /* skip empty usernames */
+        if (username.isEmpty()) {
+            parent.alert(getString(R.string.signup_empty_username));
+            this.enableSignupButton();
+            return;
+        }
+
+        JsonObjectRequest obj = new JsonObjectRequest(
+                Request.Method.GET,
+                parent.WEB_SERVICE + "/signup?username=" + username,
+                null,
+                this.onClickSignupResponseListener(parent, this),
+                this.onClickSignupErrorListener(parent, this)
+        );
 
         parent.addRequestToQueue(obj);
     }
 
-    public Response.Listener<String> onClickSignupResponseListener(final Base parent) {
-        return new Response.Listener<String>() {
+    public Response.Listener<JSONObject> onClickSignupResponseListener(final Main parent, final Home here) {
+        return new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String out) {
-                String message;
-
+            public void onResponse(JSONObject res) {
                 try {
-                    JSONObject res = new JSONObject(out);
-
                     if (res.getBoolean("ok")) {
                         /* user registration was successful */
-                        message = "Account successfully created.";
                         parent.setUserAccount(res);
+                        parent.enableAdvancedFeatures();
+                        parent.alert(getString(R.string.signup_account_created));
                     } else {
                         /* user registration failed */
-                        message = res.getString("error");
+                        here.enableSignupButton();
+                        parent.alert(res.getString("error"));
                     }
                 } catch (JSONException e) {
-                    message = e.getMessage();
+                    parent.alert(e.getMessage());
                 }
-
-                Snackbar.make(
-                        getActivity().findViewById(R.id.flContent),
-                        message,
-                        Snackbar.LENGTH_SHORT
-                ).show();
             }
         };
     }
 
-    public Response.ErrorListener onClickSignupErrorListener() {
+    public Response.ErrorListener onClickSignupErrorListener(final Main parent, final Home here) {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // TODO: Handle error
+                /* https://stackoverflow.com/a/24700973 */
+                parent.alert(error.toString());
+                here.enableSignupButton();
             }
         };
     }
