@@ -2,8 +2,8 @@ package com.cixtor.jhobber.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -26,6 +26,9 @@ public class Main extends Base implements
         Settings.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
 
+    private NavigationView nvDrawer;
+    private Menu nvDrawerMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,9 @@ public class Main extends Base implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        this.setDrawerState();
+        nvDrawer = (NavigationView) findViewById(R.id.nav_view);
+        nvDrawer.setNavigationItemSelectedListener(this);
+        nvDrawerMenu = nvDrawer.getMenu();
 
         this.setInitialFragment();
     }
@@ -105,9 +110,10 @@ public class Main extends Base implements
 
         /* Fragment content switching. */
         if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flContent, fragment);
-            ft.commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.flContent, fragment)
+                    .commit();
         }
 
         /* Close the drawer after touching an item. */
@@ -122,27 +128,28 @@ public class Main extends Base implements
         getSupportActionBar().setTitle(title);
     }
 
-    private void setDrawerState() {
-        NavigationView nvDrawer = (NavigationView) findViewById(R.id.nav_view);
-        Menu menu = nvDrawer.getMenu();
-
-        nvDrawer.setNavigationItemSelectedListener(this);
-
-        /* account exists; show profile */
-        if (this.isValidAccount()) {
-            nvDrawer.setCheckedItem(R.id.nav_profile);
-            menu.findItem(R.id.nav_map).setEnabled(true);
-            menu.findItem(R.id.nav_profile).setEnabled(true);
-            menu.findItem(R.id.nav_settings).setEnabled(true);
-            return;
-        }
-
-        nvDrawer.setCheckedItem(R.id.nav_home);
-        menu.findItem(R.id.nav_home).setEnabled(true);
-    }
-
     private void setInitialFragment() {
         Fragment fragment;
+
+        if (this.isValidAccount()) {
+            /* account exists; show profile */
+            nvDrawer.setCheckedItem(R.id.nav_profile);
+
+            nvDrawerMenu.findItem(R.id.nav_home).setEnabled(false);
+            nvDrawerMenu.findItem(R.id.nav_map).setEnabled(true);
+            nvDrawerMenu.findItem(R.id.nav_profile).setEnabled(true);
+            nvDrawerMenu.findItem(R.id.nav_settings).setEnabled(true);
+            nvDrawerMenu.findItem(R.id.nav_about).setEnabled(true);
+        } else {
+            /* account does not exists; show signup */
+            nvDrawer.setCheckedItem(R.id.nav_home);
+
+            nvDrawerMenu.findItem(R.id.nav_home).setEnabled(true);
+            nvDrawerMenu.findItem(R.id.nav_map).setEnabled(false);
+            nvDrawerMenu.findItem(R.id.nav_profile).setEnabled(false);
+            nvDrawerMenu.findItem(R.id.nav_settings).setEnabled(false);
+            nvDrawerMenu.findItem(R.id.nav_about).setEnabled(true);
+        }
 
         if (this.isValidAccount()) {
             fragment = new Profile();
@@ -150,8 +157,22 @@ public class Main extends Base implements
             fragment = new Home();
         }
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.flContent, fragment);
-        ft.commit();
+        this.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.flContent, fragment)
+                .commit();
+    }
+
+    public void enableAdvancedFeatures() {
+        /* expect fragment.profile */
+        this.setInitialFragment();
+    }
+
+    public void alert(String message) {
+        Snackbar.make(
+                this.findViewById(R.id.flContent),
+                message.toString(),
+                Snackbar.LENGTH_SHORT
+        ).show();
     }
 }

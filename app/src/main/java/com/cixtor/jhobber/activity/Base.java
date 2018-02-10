@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.cixtor.jhobber.model.User;
 
@@ -22,7 +22,7 @@ import java.util.List;
 public class Base extends AppCompatActivity {
     public final int LOADING_TIME = 1000;
     public final String DATABASE = "jhobber.database.json";
-    public final String WEB_SERVICE = "https://d719134d.ngrok.io";
+    public final String WEB_SERVICE = "https://19ba868f.ngrok.io";
 
     private User userAccount;
     private RequestQueue requestQueue;
@@ -50,7 +50,7 @@ public class Base extends AppCompatActivity {
         return this.userAccount;
     }
 
-    public void addRequestToQueue(StringRequest obj) {
+    public void addRequestToQueue(JsonObjectRequest obj) {
         this.requestQueue.add(obj);
     }
 
