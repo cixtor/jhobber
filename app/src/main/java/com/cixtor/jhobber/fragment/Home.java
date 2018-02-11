@@ -128,7 +128,7 @@ public class Home extends Fragment implements View.OnClickListener {
                 try {
                     if (res.getBoolean("ok")) {
                         /* user registration was successful */
-                        parent.setUserAccount(res);
+                        parent.saveUserAccount(res);
                         parent.enableAdvancedFeatures();
                         parent.alert(getString(R.string.signup_account_created));
                     } else {

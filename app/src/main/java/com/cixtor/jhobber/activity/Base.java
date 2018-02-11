@@ -1,6 +1,7 @@
 package com.cixtor.jhobber.activity;
 
-import android.content.res.AssetManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -12,28 +13,26 @@ import com.cixtor.jhobber.model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 
 public class Base extends AppCompatActivity {
     public final int LOADING_TIME = 1000;
-    public final String DATABASE = "jhobber.database.json";
-    public final String WEB_SERVICE = "https://19ba868f.ngrok.io";
+    public final String DATABASE = "com.cixtor.jhobber.prefs";
+    public final String WEB_SERVICE = "https://f9654710.ngrok.io";
 
     private User userAccount;
     private RequestQueue requestQueue;
+    private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         this.userAccount = new User();
-
         this.requestQueue = Volley.newRequestQueue(this);
+        this.mPreferences = getSharedPreferences(DATABASE, Context.MODE_PRIVATE);
+        this.mEditor = mPreferences.edit();
 
         try {
             this.loadLocalData();
@@ -55,9 +54,15 @@ public class Base extends AppCompatActivity {
     }
 
     private void loadLocalData() throws JSONException {
-        String content = this.getLocalDataContent();
-        JSONObject obj = new JSONObject(content);
-        this.setUserAccount(obj);
+        HashMap<String, String> data = new HashMap<String, String>();
+
+        data.put("uuid", this.mPreferences.getString("uuid", ""));
+        data.put("firstname", this.mPreferences.getString("firstname", ""));
+        data.put("lastname", this.mPreferences.getString("lastname", ""));
+        data.put("occupation", this.mPreferences.getString("occupation", ""));
+        data.put("avatar", this.mPreferences.getString("avatar", ""));
+
+        this.setUserAccount(new JSONObject(data));
     }
 
     public void setUserAccount(JSONObject obj) throws JSONException {
@@ -79,42 +84,15 @@ public class Base extends AppCompatActivity {
         this.userAccount.setAvatar(obj.getString("avatar"));
     }
 
-    public boolean hasLocalStorage() {
-        AssetManager mg = this.getResources().getAssets();
+    public void saveUserAccount(JSONObject obj) throws JSONException {
+        this.setUserAccount(obj);
 
-        try {
-            List files = Arrays.asList(mg.list(""));
-            return files.contains(this.DATABASE);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mEditor.putString("uuid", this.userAccount.getUUID());
+        mEditor.putString("firstname", this.userAccount.getFirstName());
+        mEditor.putString("lastname", this.userAccount.getLastName());
+        mEditor.putString("occupation", this.userAccount.getOccupation());
+        mEditor.putString("avatar", this.userAccount.getAvatar());
 
-        return false;
-    }
-
-    public String getLocalDataContent() {
-        if (!this.hasLocalStorage()) {
-            return "{}";
-        }
-
-        String content = "";
-
-        try {
-            String line;
-            AssetManager mg = this.getResources().getAssets();
-            InputStream is = mg.open(this.DATABASE);
-            InputStreamReader isr = new InputStreamReader(is, "UTF-8");
-            BufferedReader reader = new BufferedReader(isr);
-
-            while ((line = reader.readLine()) != null) {
-                content = content + line;
-            }
-
-            isr.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return content;
+        mEditor.commit();
     }
 }
