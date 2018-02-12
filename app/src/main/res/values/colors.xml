@@ -5,6 +5,7 @@
     <color name="colorPrimary">#383152</color>
     <color name="colorPrimaryDark">#282240</color>
     <color name="colorAccent">#847cf1</color>
-    <color name="colorAccentAlpha">#70847cf1</color>
+    <color name="colorAccentAlpha">#90847cf1</color>
     <color name="colorWidget">#564b83</color>
+    <color name="avatarBorder">#ff847cf1</color>
 </resources>

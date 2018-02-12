@@ -6,24 +6,27 @@
     android:background="@color/colorBlack"
     tools:context=".fragment.Profile">
 
-    <FrameLayout
+    <ImageView
+        android:id="@+id/profileAvatarBack"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@mipmap/user_avatar_bg"
-        android:alpha="0.6">
-    </FrameLayout>
+        android:layout_height="360dp"
+        android:background="@color/colorBlack"
+        android:alpha="0.4" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="300dp">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/nav_header_vertical_spacing"
-            android:src="@mipmap/user_avatar_fg"
-            android:layout_marginTop="40dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profileAvatar"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/app_name"
+            app:civ_border_color="@color/avatarBorder"
+            app:civ_border_width="2dp" />
 
         <FrameLayout
             android:layout_gravity="bottom"
@@ -35,19 +38,21 @@
             android:paddingRight="20dp">
 
             <TextView
+                android:id="@+id/profileFullname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/user_fullname"
                 android:textColor="@color/colorWhite"
-                android:textSize="32dp" />
+                android:textSize="32sp" />
 
             <TextView
+                android:id="@+id/profileOccupation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/user_jobtitle"
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="40dp"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
         </FrameLayout>
     </FrameLayout>
 
@@ -56,14 +61,9 @@
         android:layout_width="match_parent"
         android:layout_height="267dp"
         android:background="@color/colorWhite">
-
         <ListView
             android:id="@+id/job_posts"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true" />
-
+            android:layout_height="match_parent" />
     </LinearLayout>
-
 </FrameLayout>

@@ -2,22 +2,26 @@ package com.cixtor.jhobber.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.cixtor.jhobber.R;
+import com.cixtor.jhobber.activity.Main;
+import com.cixtor.jhobber.model.DownloadImageTask;
 import com.cixtor.jhobber.model.JobPost;
 import com.cixtor.jhobber.model.JobPostAdapter;
-import com.cixtor.jhobber.R;
 
 import java.util.ArrayList;
 
-public class Profile extends Fragment {
+public class Profile extends Fragment implements AdapterView.OnItemClickListener {
 
+    private Main parent;
     private OnFragmentInteractionListener mListener;
 
     public Profile() {
@@ -30,31 +34,24 @@ public class Profile extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-
-        final ArrayList<JobPost> jobPosts = JobPost.getJobPosts();
-        JobPostAdapter adapter = new JobPostAdapter(getActivity(), jobPosts);
-        ListView listView = (ListView) rootView.findViewById(R.id.job_posts);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                JobPost jobPost = (JobPost) parent.getItemAtPosition(position);
-
-                Snackbar.make(
-                        getActivity().findViewById(R.id.flContent),
-                        "Resume has been sent to " + jobPost.getCompany(),
-                        Snackbar.LENGTH_SHORT
-                ).show();
-            }
-        });
+        this.parent = (Main) this.getActivity();
 
         if (mListener != null) {
             mListener.onFragmentInteraction("Profile");
         }
 
-        return rootView;
+        View v = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        this.setProfileData(v);
+
+        final ArrayList<JobPost> jobPosts = JobPost.getJobPosts();
+        JobPostAdapter adapter = new JobPostAdapter(getActivity(), jobPosts);
+        ListView listView = (ListView) v.findViewById(R.id.job_posts);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(this);
+
+        return v;
     }
 
     @Override
@@ -71,6 +68,29 @@ public class Profile extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void setProfileData(View v) {
+        if (!parent.isValidAccount()) {
+            return;
+        }
+
+        TextView tvFullname = (TextView) v.findViewById(R.id.profileFullname);
+        tvFullname.setText(parent.getUserAccount().getFullName());
+
+        TextView tvOccupation = (TextView) v.findViewById(R.id.profileOccupation);
+        tvOccupation.setText(parent.getUserAccount().getOccupation());
+
+        String avatar = parent.getUserAccount().getAvatar();
+        new DownloadImageTask((ImageView) v.findViewById(R.id.profileAvatar)).execute(avatar);
+        new DownloadImageTask((ImageView) v.findViewById(R.id.profileAvatarBack)).execute(avatar);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        JobPost jobPost = (JobPost) parent.getItemAtPosition(position);
+
+        this.parent.alert("Resume has been sent to " + jobPost.getCompany());
     }
 
     public interface OnFragmentInteractionListener {

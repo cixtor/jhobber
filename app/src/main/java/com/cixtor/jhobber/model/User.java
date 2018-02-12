@@ -39,6 +39,10 @@ public class User {
         mLastName = lastName;
     }
 
+    public String getFullName() {
+        return mFirstName + "\u0020" + mLastName;
+    }
+
     public String getOccupation() {
         return mOccupation;
     }
