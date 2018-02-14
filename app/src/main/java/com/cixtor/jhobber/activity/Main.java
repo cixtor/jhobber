@@ -10,6 +10,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cixtor.jhobber.R;
 import com.cixtor.jhobber.fragment.About;
@@ -17,6 +20,7 @@ import com.cixtor.jhobber.fragment.Home;
 import com.cixtor.jhobber.fragment.Planet;
 import com.cixtor.jhobber.fragment.Profile;
 import com.cixtor.jhobber.fragment.Settings;
+import com.cixtor.jhobber.model.DownloadImageTask;
 
 public class Main extends Base implements
         About.OnFragmentInteractionListener,
@@ -26,7 +30,10 @@ public class Main extends Base implements
         Settings.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
 
-    private NavigationView nvDrawer;
+    private final int NAVIGATION_HEADER_VIEW = 0;
+
+    private NavigationView mDrawerView;
+    private DrawerLayout mDrawerLayout;
     private Menu nvDrawerMenu;
 
     @Override
@@ -39,29 +46,27 @@ public class Main extends Base implements
         setSupportActionBar(toolbar);
 
         /* Find and attach a toggle event to our Drawer view. */
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this,
-                drawer,
+                mDrawerLayout,
                 toolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        nvDrawer = (NavigationView) findViewById(R.id.nav_view);
-        nvDrawer.setNavigationItemSelectedListener(this);
-        nvDrawerMenu = nvDrawer.getMenu();
+        mDrawerView = (NavigationView) findViewById(R.id.nav_view);
+        mDrawerView.setNavigationItemSelectedListener(this);
+        nvDrawerMenu = mDrawerView.getMenu();
 
         this.setInitialFragment();
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -117,8 +122,7 @@ public class Main extends Base implements
         }
 
         /* Close the drawer after touching an item. */
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -131,9 +135,11 @@ public class Main extends Base implements
     private void setInitialFragment() {
         Fragment fragment;
 
+        this.setDrawerUserData();
+
         if (this.isValidAccount()) {
             /* account exists; show profile */
-            nvDrawer.setCheckedItem(R.id.nav_profile);
+            mDrawerView.setCheckedItem(R.id.nav_profile);
 
             nvDrawerMenu.findItem(R.id.nav_home).setEnabled(false);
             nvDrawerMenu.findItem(R.id.nav_map).setEnabled(true);
@@ -142,7 +148,7 @@ public class Main extends Base implements
             nvDrawerMenu.findItem(R.id.nav_about).setEnabled(true);
         } else {
             /* account does not exists; show signup */
-            nvDrawer.setCheckedItem(R.id.nav_home);
+            mDrawerView.setCheckedItem(R.id.nav_home);
 
             nvDrawerMenu.findItem(R.id.nav_home).setEnabled(true);
             nvDrawerMenu.findItem(R.id.nav_map).setEnabled(false);
@@ -161,6 +167,23 @@ public class Main extends Base implements
                 .beginTransaction()
                 .replace(R.id.flContent, fragment)
                 .commit();
+    }
+
+    private void setDrawerUserData() {
+        if (!this.isValidAccount()) {
+            return;
+        }
+
+        View v = mDrawerView.getHeaderView(NAVIGATION_HEADER_VIEW);
+
+        TextView tvFullname = (TextView) v.findViewById(R.id.drawerFullname);
+        tvFullname.setText(this.getUserAccount().getFullName());
+
+        TextView tvOccupation = (TextView) v.findViewById(R.id.drawerOccupation);
+        tvOccupation.setText(this.getUserAccount().getOccupation());
+
+        String avatar = this.getUserAccount().getAvatar();
+        new DownloadImageTask((ImageView) v.findViewById(R.id.drawerAvatar)).execute(avatar);
     }
 
     public void enableAdvancedFeatures() {
