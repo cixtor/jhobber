@@ -24,4 +24,9 @@
     <string name="signup_creating">Creating...</string>
     <string name="signup_empty_username">Username is empty, try again.</string>
     <string name="signup_account_created">Account successfully created.</string>
+    <string name="logout_title">Jhobber — Log Out</string>
+    <string name="logout_warning">All the data associated to your profile will be deleted from your phone. If you log into the app once again, the data will be re-downloaded from LinkedIn.</string>
+    <string name="logout_success">Profile data has been deleted.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

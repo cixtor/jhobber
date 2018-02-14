@@ -1,5 +1,6 @@
 package com.cixtor.jhobber.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,7 +89,8 @@ public class Main extends Base implements
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.logoutButton) {
+            this.resetProfileData(this);
             return true;
         }
 
@@ -170,20 +173,26 @@ public class Main extends Base implements
     }
 
     private void setDrawerUserData() {
-        if (!this.isValidAccount()) {
-            return;
-        }
-
         View v = mDrawerView.getHeaderView(NAVIGATION_HEADER_VIEW);
 
         TextView tvFullname = (TextView) v.findViewById(R.id.drawerFullname);
-        tvFullname.setText(this.getUserAccount().getFullName());
-
         TextView tvOccupation = (TextView) v.findViewById(R.id.drawerOccupation);
-        tvOccupation.setText(this.getUserAccount().getOccupation());
+        ImageView tvAvatar = (ImageView) v.findViewById(R.id.drawerAvatar);
+
+        if (!this.isValidAccount()) {
+            tvFullname.setText("");
+            tvOccupation.setText("");
+            tvAvatar.setImageResource(R.mipmap.ic_launcher_round);
+            return;
+        }
 
         String avatar = this.getUserAccount().getAvatar();
-        new DownloadImageTask((ImageView) v.findViewById(R.id.drawerAvatar)).execute(avatar);
+
+        tvFullname.setText(this.getUserAccount().getFullName());
+
+        tvOccupation.setText(this.getUserAccount().getOccupation());
+
+        new DownloadImageTask(tvAvatar).execute(avatar);
     }
 
     public void enableAdvancedFeatures() {
@@ -191,6 +200,21 @@ public class Main extends Base implements
         this.setInitialFragment();
     }
 
+    public void resetProfileData(final Main here) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.logout_title)
+                .setMessage(R.string.logout_warning)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        here.deleteUserAccount();
+                        here.setInitialFragment();
+                        here.alert(getString(R.string.logout_success));
+                    }
+                })
+                .setNegativeButton(R.string.no, null)
+                .show();
+    }
     public void alert(String message) {
         Snackbar.make(
                 this.findViewById(R.id.flContent),

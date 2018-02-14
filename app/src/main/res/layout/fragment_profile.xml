@@ -10,7 +10,7 @@
         android:id="@+id/profileAvatarBack"
         android:layout_width="match_parent"
         android:layout_height="360dp"
-        android:background="@color/colorBlack"
+        android:background="@color/colorWidget"
         android:alpha="0.4" />
 
     <FrameLayout

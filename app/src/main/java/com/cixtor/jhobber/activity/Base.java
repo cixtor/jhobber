@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -17,8 +18,9 @@ import java.util.HashMap;
 
 public class Base extends AppCompatActivity {
     public final int LOADING_TIME = 1000;
+    public final String TAG = "JHOBBER";
     public final String DATABASE = "com.cixtor.jhobber.prefs";
-    public final String WEB_SERVICE = "https://f9654710.ngrok.io";
+    public final String WEB_SERVICE = "https://ee473f7d.ngrok.io";
 
     private User userAccount;
     private RequestQueue requestQueue;
@@ -94,5 +96,16 @@ public class Base extends AppCompatActivity {
         mEditor.putString("avatar", this.userAccount.getAvatar());
 
         mEditor.commit();
+    }
+
+    public void deleteUserAccount() {
+        this.userAccount = new User();
+
+        mEditor.clear();
+        mEditor.commit();
+    }
+
+    public void log(String msg) {
+        Log.d(TAG, msg);
     }
 }
