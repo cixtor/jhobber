@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorBlack">#000000</color>
-    <color name="colorWhite">#ffffff</color>
-    <color name="colorPrimary">#383152</color>
-    <color name="colorPrimaryDark">#282240</color>
-    <color name="colorAccent">#847cf1</color>
-    <color name="colorAccentAlpha">#90847cf1</color>
-    <color name="colorWidget">#564b83</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="primary">#383152</color>
+    <color name="primaryDark">#282240</color>
+    <color name="accent">#847cf1</color>
+    <color name="accentAlpha">#90847cf1</color>
+    <color name="passive">#564b83</color>
     <color name="avatarBorder">#ff847cf1</color>
 </resources>

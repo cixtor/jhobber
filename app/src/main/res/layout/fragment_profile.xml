@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBlack"
+    android:background="@color/black"
     tools:context=".fragment.Profile">
 
     <ImageView
         android:id="@+id/profileAvatarBack"
         android:layout_width="match_parent"
         android:layout_height="360dp"
-        android:background="@color/colorWidget"
+        android:background="@color/passive"
         android:alpha="0.4" />
 
     <FrameLayout
@@ -32,7 +32,7 @@
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:background="@color/colorAccentAlpha"
+            android:background="@color/accentAlpha"
             android:paddingTop="14dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/user_fullname"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/white"
                 android:textSize="32sp" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/user_jobtitle"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/white"
                 android:layout_marginTop="40dp"
                 android:textSize="16sp" />
         </FrameLayout>
@@ -60,7 +60,7 @@
         android:layout_marginTop="300dp"
         android:layout_width="match_parent"
         android:layout_height="267dp"
-        android:background="@color/colorWhite">
+        android:background="@color/white">
         <ListView
             android:id="@+id/job_posts"
             android:layout_width="match_parent"

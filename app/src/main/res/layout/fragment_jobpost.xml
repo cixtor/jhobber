@@ -17,7 +17,7 @@
         android:text="{COMPANY}"
         android:textSize="18dp"
         android:textStyle="bold"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/black"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="110dp" />
 
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="{JOB_TITLE}"
         android:textSize="16dp"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/black"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="110dp" />
 
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:text="{JOB_SKILLS}"
         android:textSize="14dp"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/black"
         android:layout_marginTop="64dp"
         android:layout_marginLeft="110dp" />
 

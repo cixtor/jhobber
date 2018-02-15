@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/primary"
     tools:context=".fragment.Home">
 
     <LinearLayout
@@ -30,9 +30,9 @@
             android:maxLines="1"
             android:inputType="text"
             android:hint="@string/signup_username"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/colorWidget"
-            android:backgroundTint="@color/colorAccent" />
+            android:textColor="@color/accent"
+            android:textColorHint="@color/passive"
+            android:backgroundTint="@color/accent" />
 
         <Button
             android:id="@+id/signupButton"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:text="@string/signup_button"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/primary" />
     </LinearLayout>
 
     <LinearLayout
@@ -53,7 +53,7 @@
         <View
             android:layout_height="1dp"
             android:layout_width="76dp"
-            android:background="@color/colorWidget"
+            android:background="@color/passive"
             android:layout_gravity="center"/>
         <TextView
             android:layout_marginStart="10dp"
@@ -62,12 +62,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textStyle="italic"
-            android:textColor="@color/colorWidget"
+            android:textColor="@color/passive"
             android:text="@string/signup_footer" />
         <View
             android:layout_height="1dp"
             android:layout_width="76dp"
-            android:background="@color/colorWidget"
+            android:background="@color/passive"
             android:layout_gravity="center"/>
     </LinearLayout>
 </FrameLayout>
