@@ -2,11 +2,11 @@ package com.cixtor.jhobber.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -23,6 +23,7 @@ import org.json.JSONObject;
 public class Home extends Fragment implements View.OnClickListener {
     public final String TAG = "JHOBBER_HOME";
 
+    private Main parent;
     private OnFragmentInteractionListener mListener;
     private EditText mSignupUsername;
     private Button mSignupButton;
@@ -37,6 +38,8 @@ public class Home extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.parent = (Main) this.getActivity();
+
         if (mListener != null) {
             mListener.onFragmentInteraction("Home");
         }
@@ -74,11 +77,7 @@ public class Home extends Fragment implements View.OnClickListener {
         try {
             this.onClickSignup(v, buttonId);
         } catch (JSONException e) {
-            Snackbar.make(
-                    getActivity().findViewById(R.id.flContent),
-                    e.getMessage(),
-                    Snackbar.LENGTH_SHORT
-            ).show();
+            parent.alert(e.getMessage());
         }
     }
 
@@ -97,9 +96,11 @@ public class Home extends Fragment implements View.OnClickListener {
             return;
         }
 
-        this.disableSignupButton();
+        /* hide the keyboard to increase the visibility of the Snackbar alerts */
+        InputMethodManager imm = (InputMethodManager) this.parent.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mSignupUsername.getWindowToken(), 0);
 
-        Main parent = (Main) this.getActivity();
+        this.disableSignupButton();
 
         String username = mSignupUsername.getText().toString();
 

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingTop="50dp"
+        android:paddingTop="40dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
         <ImageView
@@ -26,7 +26,7 @@
             android:id="@+id/signupUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="50dp"
+            android:paddingTop="40dp"
             android:maxLines="1"
             android:inputType="text"
             android:hint="@string/signup_username"
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:layout_marginTop="350dp">
+        android:layout_marginTop="320dp">
         <View
             android:layout_height="1dp"
             android:layout_width="76dp"
