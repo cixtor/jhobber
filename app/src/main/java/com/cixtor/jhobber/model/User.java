@@ -1,6 +1,9 @@
 package com.cixtor.jhobber.model;
 
 public class User {
+    private final int MAX_FULLNAME = 17;
+    private final int MAX_OCCUPATION = 38;
+
     private String mUUID;
     private String mFirstName;
     private String mLastName;
@@ -40,10 +43,20 @@ public class User {
     }
 
     public String getFullName() {
-        return mFirstName + "\u0020" + mLastName;
+        String full = mFirstName + "\u0020" + mLastName;
+
+        if (full.length() > MAX_FULLNAME) {
+            return full.substring(0, MAX_FULLNAME) + "…";
+        }
+
+        return full;
     }
 
     public String getOccupation() {
+        if (mOccupation.length() > MAX_OCCUPATION) {
+            return mOccupation.substring(0, MAX_OCCUPATION) + "…";
+        }
+
         return mOccupation;
     }
 
