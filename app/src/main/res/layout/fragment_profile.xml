@@ -10,6 +10,8 @@
         android:id="@+id/profileAvatarBack"
         android:layout_width="match_parent"
         android:layout_height="360dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="-60dp"
         android:background="@color/passive"
         android:alpha="0.4" />
 
@@ -62,7 +64,7 @@
         android:layout_height="267dp"
         android:background="@color/white">
         <ListView
-            android:id="@+id/job_posts"
+            android:id="@+id/jobPosts"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

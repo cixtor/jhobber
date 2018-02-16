@@ -3,42 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp">
-
     <ImageView
-        android:id="@+id/jobpost_logo"
+        android:id="@+id/jobImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_menu_gallery" />
 
     <TextView
-        android:id="@+id/jobpost_company"
+        android:id="@+id/jobCompany"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="{COMPANY}"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:layout_marginTop="12dp"
-        android:layout_marginLeft="110dp" />
+        android:layout_marginStart="110dp" />
 
     <TextView
-        android:id="@+id/jobpost_title"
+        android:id="@+id/jobOccupation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="{JOB_TITLE}"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textColor="@color/black"
         android:layout_marginTop="40dp"
-        android:layout_marginLeft="110dp" />
+        android:layout_marginStart="110dp" />
 
     <TextView
-        android:id="@+id/jobpost_skills"
+        android:id="@+id/jobSkills"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="{JOB_SKILLS}"
-        android:textSize="14dp"
+        android:textSize="14sp"
         android:textColor="@color/black"
         android:layout_marginTop="64dp"
-        android:layout_marginLeft="110dp" />
-
+        android:layout_marginStart="110dp" />
 </RelativeLayout>

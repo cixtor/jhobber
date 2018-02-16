@@ -11,17 +11,26 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.cixtor.jhobber.R;
 import com.cixtor.jhobber.activity.Main;
 import com.cixtor.jhobber.model.DownloadImageTask;
-import com.cixtor.jhobber.model.JobPost;
-import com.cixtor.jhobber.model.JobPostAdapter;
+import com.cixtor.jhobber.model.Job;
+import com.cixtor.jhobber.model.JobAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class Profile extends Fragment implements AdapterView.OnItemClickListener {
 
     private Main parent;
+    private ListView mJobPosts;
     private OnFragmentInteractionListener mListener;
 
     public Profile() {
@@ -34,7 +43,7 @@ public class Profile extends Fragment implements AdapterView.OnItemClickListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.parent = (Main) this.getActivity();
+        parent = (Main) this.getActivity();
 
         if (mListener != null) {
             mListener.onFragmentInteraction("Profile");
@@ -42,14 +51,11 @@ public class Profile extends Fragment implements AdapterView.OnItemClickListener
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        mJobPosts = (ListView) v.findViewById(R.id.jobPosts);
+
         this.setProfileData(v);
 
-        final ArrayList<JobPost> jobPosts = JobPost.getJobPosts();
-        JobPostAdapter adapter = new JobPostAdapter(getActivity(), jobPosts);
-        ListView listView = (ListView) v.findViewById(R.id.job_posts);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(this);
+        this.loadJobPosts(v);
 
         return v;
     }
@@ -70,6 +76,13 @@ public class Profile extends Fragment implements AdapterView.OnItemClickListener
         mListener = null;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> av, View v, int position, long id) {
+        Job job = (Job) av.getItemAtPosition(position);
+
+        parent.alert("Resume has been sent to " + job.getCompany());
+    }
+
     private void setProfileData(View v) {
         if (!parent.isValidAccount()) {
             return;
@@ -86,11 +99,70 @@ public class Profile extends Fragment implements AdapterView.OnItemClickListener
         new DownloadImageTask((ImageView) v.findViewById(R.id.profileAvatarBack)).execute(avatar);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        JobPost jobPost = (JobPost) parent.getItemAtPosition(position);
+    private void loadJobPosts(View v) {
+        JsonObjectRequest obj = new JsonObjectRequest(
+                Request.Method.GET,
+                parent.WEB_SERVICE + "/jobs",
+                null,
+                this.getJobsResponseListener(parent, this),
+                this.getJobsErrorListener(parent, this)
+        );
 
-        this.parent.alert("Resume has been sent to " + jobPost.getCompany());
+        parent.addRequestToQueue(obj);
+    }
+
+    private Response.Listener<JSONObject> getJobsResponseListener(final Main parent, final Profile here) {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject res) {
+                try {
+                    here.loadJobPostsIntoList(res);
+                } catch (JSONException e) {
+                    parent.alert(e.getMessage());
+                }
+            }
+        };
+    }
+
+    public Response.ErrorListener getJobsErrorListener(final Main parent, final Profile here) {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                /* https://stackoverflow.com/a/24700973 */
+                parent.alert(error.toString());
+            }
+        };
+    }
+
+    private void loadJobPostsIntoList(JSONObject res) throws JSONException {
+        if (!res.getBoolean("ok")) {
+            parent.alert(res.getString("error"));
+            return;
+        }
+
+        ArrayList<Job> jobs = new ArrayList<Job>();
+        JSONArray items = res.getJSONArray("jobs");
+        int total = items.length();
+
+        for (int i = 0; i < total; i++) {
+            Job job = new Job();
+
+            JSONObject item = items.getJSONObject(i);
+
+            job.setID(item.getInt("id"));
+            job.setCompany(item.getString("company"));
+            job.setImage(item.getString("image"));
+            job.setOccupation(item.getString("occupation"));
+            job.setSkills(item.getString("skills"));
+
+            jobs.add(job);
+        }
+
+        JobAdapter adapter = new JobAdapter(parent, jobs);
+
+        mJobPosts.setAdapter(adapter);
+
+        mJobPosts.setOnItemClickListener(this);
     }
 
     public interface OnFragmentInteractionListener {
