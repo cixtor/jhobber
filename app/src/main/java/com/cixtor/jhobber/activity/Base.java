@@ -20,7 +20,7 @@ public class Base extends AppCompatActivity {
     public final int LOADING_TIME = 1000;
     public final String TAG = "JHOBBER";
     public final String DATABASE = "com.cixtor.jhobber.prefs";
-    public final String WEB_SERVICE = "https://ee473f7d.ngrok.io";
+    public final String WEB_SERVICE = "https://551e193e.ngrok.io";
 
     private User userAccount;
     private RequestQueue requestQueue;

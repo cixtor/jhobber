@@ -1,40 +1,45 @@
 package com.cixtor.jhobber.model;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.cixtor.jhobber.R;
+import com.cixtor.jhobber.activity.Main;
 
 import java.util.ArrayList;
 
-public class JobAdapter extends ArrayAdapter<Job> {
-    public JobAdapter(Context context, ArrayList<Job> posts) {
-        super(context, 0, posts);
+public class JobAdapter extends RecyclerView.Adapter<JobViewHolder> {
+    private Main parent;
+    private ArrayList<Job> data;
+
+    public JobAdapter(Main activity, ArrayList<Job> jobs) {
+        this.data = jobs;
+        this.parent = activity;
     }
 
     @Override
-    public View getView(int index, View v, ViewGroup group) {
-        if (v == null) {
-            v = LayoutInflater.from(getContext()).inflate(R.layout.fragment_job, group, false);
-        }
+    public JobViewHolder onCreateViewHolder(ViewGroup group, int viewType) {
+        View v = LayoutInflater.from(group.getContext())
+                .inflate(R.layout.fragment_job, group, false);
 
-        Job post = getItem(index);
+        return new JobViewHolder(parent, v, data);
+    }
 
-        ImageView image = (ImageView) v.findViewById(R.id.jobImage);
-        TextView company = (TextView) v.findViewById(R.id.jobCompany);
-        TextView occupation = (TextView) v.findViewById(R.id.jobOccupation);
-        TextView skills = (TextView) v.findViewById(R.id.jobSkills);
+    @Override
+    public void onBindViewHolder(JobViewHolder v, int position) {
+        Job job = data.get(position);
 
-        new DownloadImageTask(image).execute(post.getImage());
-        company.setText(post.getCompany());
-        occupation.setText(post.getOccupation());
-        skills.setText(post.getSkills());
+        new DownloadImageTask(v.getImage()).execute(job.getImage());
 
-        return v;
+        v.getCompany().setText(job.getCompany());
+        v.getOccupation().setText(job.getOccupation());
+        v.getSkills().setText(job.getSkills());
+    }
+
+    @Override
+    public int getItemCount() {
+        return data.size();
     }
 }

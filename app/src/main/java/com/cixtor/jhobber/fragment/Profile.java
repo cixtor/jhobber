@@ -3,12 +3,12 @@ package com.cixtor.jhobber.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -27,10 +27,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Profile extends Fragment implements AdapterView.OnItemClickListener {
+public class Profile extends Fragment {
 
     private Main parent;
-    private ListView mJobPosts;
+    private RecyclerView mJobView;
+    private JobAdapter mJobAdapter;
+    private RecyclerView.LayoutManager mJobManager;
     private OnFragmentInteractionListener mListener;
 
     public Profile() {
@@ -51,7 +53,10 @@ public class Profile extends Fragment implements AdapterView.OnItemClickListener
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        mJobPosts = (ListView) v.findViewById(R.id.jobPosts);
+        mJobView = (RecyclerView) v.findViewById(R.id.jobPosts);
+        mJobManager = new LinearLayoutManager(parent);
+        mJobView.setLayoutManager(mJobManager);
+        mJobView.scrollToPosition(0);
 
         this.setProfileData(v);
 
@@ -74,13 +79,6 @@ public class Profile extends Fragment implements AdapterView.OnItemClickListener
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> av, View v, int position, long id) {
-        Job job = (Job) av.getItemAtPosition(position);
-
-        parent.alert("Resume has been sent to " + job.getCompany());
     }
 
     private void setProfileData(View v) {
@@ -158,11 +156,9 @@ public class Profile extends Fragment implements AdapterView.OnItemClickListener
             jobs.add(job);
         }
 
-        JobAdapter adapter = new JobAdapter(parent, jobs);
+        mJobAdapter = new JobAdapter(parent, jobs);
 
-        mJobPosts.setAdapter(adapter);
-
-        mJobPosts.setOnItemClickListener(this);
+        mJobView.setAdapter(mJobAdapter);
     }
 
     public interface OnFragmentInteractionListener {

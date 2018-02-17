@@ -27,14 +27,14 @@
             android:layout_marginTop="40dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/app_name"
-            app:civ_border_color="@color/avatarBorder"
+            app:civ_border_color="@color/accentAlpha"
             app:civ_border_width="2dp" />
 
         <FrameLayout
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:background="@color/accentAlpha"
+            android:background="@color/passiveAlpha"
             android:paddingTop="14dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
@@ -63,8 +63,9 @@
         android:layout_width="match_parent"
         android:layout_height="267dp"
         android:background="@color/white">
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/jobPosts"
+            android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

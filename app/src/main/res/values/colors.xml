@@ -4,8 +4,10 @@
     <color name="white">#ffffff</color>
     <color name="primary">#383152</color>
     <color name="primaryDark">#282240</color>
+    <color name="primaryAlpha">#be383152</color>
     <color name="accent">#847cf1</color>
     <color name="accentAlpha">#90847cf1</color>
     <color name="passive">#564b83</color>
+    <color name="passiveAlpha">#aa564b83</color>
     <color name="avatarBorder">#ff847cf1</color>
 </resources>
