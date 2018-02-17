@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/job_height"
     android:paddingLeft="@dimen/job_padding"
-    android:paddingRight="@dimen/job_padding">
+    android:paddingRight="@dimen/job_padding"
+    android:background="?android:attr/selectableItemBackground">
     <ImageView
         android:id="@+id/jobImage"
         android:layout_width="@dimen/job_image_width"
