@@ -192,7 +192,7 @@ public class Main extends Base implements
 
         tvOccupation.setText(this.getUserAccount().getOccupation());
 
-        new DownloadImageTask(tvAvatar).execute(avatar);
+        new DownloadImageTask(this, tvAvatar).execute(avatar);
     }
 
     public void enableAdvancedFeatures() {

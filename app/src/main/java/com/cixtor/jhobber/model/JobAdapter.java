@@ -31,7 +31,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobViewHolder> {
     public void onBindViewHolder(JobViewHolder v, int position) {
         Job job = data.get(position);
 
-        new DownloadImageTask(v.getImage()).execute(job.getImage());
+        new DownloadImageTask(parent, v.getImage()).execute(job.getImage());
 
         v.getCompany().setText(job.getCompany());
         v.getOccupation().setText(job.getOccupation());

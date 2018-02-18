@@ -5,12 +5,17 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
+import com.cixtor.jhobber.activity.Main;
+
 import java.io.InputStream;
+import java.net.ConnectException;
 
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    ImageView bmImage;
+    private Main parent;
+    private ImageView bmImage;
 
-    public DownloadImageTask(ImageView bmImage) {
+    public DownloadImageTask(Main activity, ImageView bmImage) {
+        this.parent = activity;
         this.bmImage = bmImage;
     }
 
@@ -22,6 +27,8 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         try {
             InputStream in = new java.net.URL(url).openStream();
             image = BitmapFactory.decodeStream(in);
+        } catch (ConnectException e) {
+            parent.alert(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }

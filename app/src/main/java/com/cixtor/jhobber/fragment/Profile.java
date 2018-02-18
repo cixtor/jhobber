@@ -93,8 +93,8 @@ public class Profile extends Fragment {
         tvOccupation.setText(parent.getUserAccount().getOccupation());
 
         String avatar = parent.getUserAccount().getAvatar();
-        new DownloadImageTask((ImageView) v.findViewById(R.id.profileAvatar)).execute(avatar);
-        new DownloadImageTask((ImageView) v.findViewById(R.id.profileAvatarBack)).execute(avatar);
+        new DownloadImageTask(parent, (ImageView) v.findViewById(R.id.profileAvatar)).execute(avatar);
+        new DownloadImageTask(parent, (ImageView) v.findViewById(R.id.profileAvatarBack)).execute(avatar);
     }
 
     private void loadJobPosts(View v) {
