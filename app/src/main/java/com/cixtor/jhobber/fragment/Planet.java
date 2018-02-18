@@ -4,30 +4,29 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.cixtor.jhobber.R;
+import com.cixtor.jhobber.activity.Main;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Planet extends Fragment implements OnMapReadyCallback {
-
-    private MapView mMapView;
+public class Planet extends Fragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener {
+    private Main parent;
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
     private OnFragmentInteractionListener mListener;
 
-    private final String TAG = "JHOBBER";
     private final int GOOGLE_MAP_ZOOM = 12;
     private final double GOOGLE_MAP_LATITUDE = 49.2850668662163;
     private final double GOOGLE_MAP_LONGITUDE = -123.11317313882061;
@@ -42,20 +41,25 @@ public class Planet extends Fragment implements OnMapReadyCallback {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
+        this.parent = (Main) this.getActivity();
+
+        if (mListener != null) {
+            mListener.onFragmentInteraction("Map");
+        }
+
+        View v = inflater.inflate(R.layout.fragment_planet, container, false);
 
         if (mMapFragment == null) {
             mMapFragment = SupportMapFragment.newInstance();
             mMapFragment.getMapAsync(this);
         }
 
-        getChildFragmentManager().beginTransaction().replace(R.id.googleMap, mMapFragment).commit();
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.googleMap, mMapFragment)
+                .commit();
 
-        if (mListener != null) {
-            mListener.onFragmentInteraction("Map");
-        }
-
-        return rootView;
+        return v;
     }
 
     @Override
@@ -70,33 +74,51 @@ public class Planet extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
-
-        LatLng latlng = new LatLng(GOOGLE_MAP_LATITUDE, GOOGLE_MAP_LONGITUDE);
-
+    public void onMapReady(GoogleMap map) {
         try {
-            boolean success = googleMap.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(
-                    getActivity(),
-                    R.raw.google_map
-                )
-            );
+            this.mGoogleMap = map;
 
-            if (!success) {
-                Log.e(TAG, "Style parsing failure.");
+            MapStyleOptions theme = MapStyleOptions.loadRawResourceStyle(parent, R.raw.google_map);
+
+            if (!map.setMapStyle(theme)) {
+                parent.alert("Failure parsing Google Maps stylesheet.");
+                return;
             }
+
+            LatLng gps = new LatLng(GOOGLE_MAP_LATITUDE, GOOGLE_MAP_LONGITUDE);
+
+            CameraPosition camera = new CameraPosition.Builder()
+                    .zoom(GOOGLE_MAP_ZOOM)
+                    .target(gps)
+                    .build();
+
+            mGoogleMap.clear();
+
+            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
+
+            mGoogleMap.setOnCameraIdleListener(this);
         } catch (Resources.NotFoundException e) {
-            Log.e(TAG, "Cannot find Google Map Style; error: ", e);
+            parent.alert("Cannot find Google Maps stylesheet: " + e.getMessage());
         }
+    }
 
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-            .zoom(GOOGLE_MAP_ZOOM)
-            .target(latlng)
-            .build();
+    @Override
+    public void onCameraIdle() {
+        LatLngBounds current = mGoogleMap.getProjection().getVisibleRegion().latLngBounds;
 
-        mGoogleMap.addMarker(new MarkerOptions().position(latlng).title("Current Location"));
-        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        Toast.makeText(parent, current.toString(), Toast.LENGTH_SHORT).show();
+
+        this.drawMapMarker(GOOGLE_MAP_LATITUDE, GOOGLE_MAP_LONGITUDE);
+    }
+
+    private void drawMapMarker(double latitude, double longitude) {
+        LatLng gps = new LatLng(latitude, longitude);
+
+        MarkerOptions options = new MarkerOptions()
+                .title(getString(R.string.gps_you_are_here))
+                .position(gps);
+
+        mGoogleMap.addMarker(options);
     }
 
     public interface OnFragmentInteractionListener {
