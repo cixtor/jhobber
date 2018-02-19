@@ -1,5 +1,6 @@
 package com.cixtor.jhobber.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +25,13 @@ import com.cixtor.jhobber.fragment.Planet;
 import com.cixtor.jhobber.fragment.Profile;
 import com.cixtor.jhobber.fragment.Settings;
 import com.cixtor.jhobber.model.DownloadImageTask;
+import com.cixtor.jhobber.model.Job;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class Main extends Base implements
         About.OnFragmentInteractionListener,
@@ -215,6 +224,37 @@ public class Main extends Base implements
                 .setNegativeButton(R.string.no, null)
                 .show();
     }
+
+    public ArrayList<Job> collectJobsData(JSONObject res) throws JSONException {
+        ArrayList<Job> jobs = new ArrayList<Job>();
+        JSONArray items = res.getJSONArray("jobs");
+        int total = items.length();
+
+        for (int i = 0; i < total; i++) {
+            Job job = new Job();
+
+            JSONObject item = items.getJSONObject(i);
+
+            job.setID(item.getString("id"));
+            job.setCompany(item.getString("company"));
+            job.setTitle(item.getString("title"));
+            job.setSkills(item.getString("skills"));
+            job.setImage(item.getString("image"));
+            job.setLongitude(item.getDouble("longitude"));
+            job.setLatitude(item.getDouble("latitude"));
+
+            jobs.add(job);
+        }
+
+        return jobs;
+    }
+
+    public void hideKeyboard(TextView tv) {
+        /* hide the keyboard to increase the visibility of the Snackbar alerts */
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(tv.getWindowToken(), 0);
+    }
+
     public void alert(String message) {
         Snackbar.make(
                 this.findViewById(R.id.flContent),

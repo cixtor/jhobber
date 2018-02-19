@@ -96,9 +96,7 @@ public class Home extends Fragment implements View.OnClickListener {
             return;
         }
 
-        /* hide the keyboard to increase the visibility of the Snackbar alerts */
-        InputMethodManager imm = (InputMethodManager) this.parent.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mSignupUsername.getWindowToken(), 0);
+        parent.hideKeyboard(mSignupUsername);
 
         this.disableSignupButton();
 

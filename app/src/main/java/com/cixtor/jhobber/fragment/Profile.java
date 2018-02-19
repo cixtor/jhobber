@@ -138,25 +138,7 @@ public class Profile extends Fragment {
             return;
         }
 
-        ArrayList<Job> jobs = new ArrayList<Job>();
-        JSONArray items = res.getJSONArray("jobs");
-        int total = items.length();
-
-        for (int i = 0; i < total; i++) {
-            Job job = new Job();
-
-            JSONObject item = items.getJSONObject(i);
-
-            job.setID(item.getInt("id"));
-            job.setCompany(item.getString("company"));
-            job.setImage(item.getString("image"));
-            job.setOccupation(item.getString("occupation"));
-            job.setSkills(item.getString("skills"));
-
-            jobs.add(job);
-        }
-
-        mJobAdapter = new JobAdapter(parent, jobs);
+        mJobAdapter = new JobAdapter(parent, parent.collectJobsData(res));
 
         mJobView.setAdapter(mJobAdapter);
     }
