@@ -23,7 +23,6 @@ import com.cixtor.jhobber.fragment.About;
 import com.cixtor.jhobber.fragment.Home;
 import com.cixtor.jhobber.fragment.Planet;
 import com.cixtor.jhobber.fragment.Profile;
-import com.cixtor.jhobber.fragment.Settings;
 import com.cixtor.jhobber.model.DownloadImageTask;
 import com.cixtor.jhobber.model.Job;
 
@@ -38,7 +37,6 @@ public class Main extends Base implements
         Home.OnFragmentInteractionListener,
         Planet.OnFragmentInteractionListener,
         Profile.OnFragmentInteractionListener,
-        Settings.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     private final int NAVIGATION_HEADER_VIEW = 0;
@@ -119,8 +117,6 @@ public class Main extends Base implements
             fragment = new Planet();
         } else if (id == R.id.nav_profile) {
             fragment = new Profile();
-        } else if (id == R.id.nav_settings) {
-            fragment = new Settings();
         } else if (id == R.id.nav_about) {
             fragment = new About();
         }
@@ -156,7 +152,6 @@ public class Main extends Base implements
             nvDrawerMenu.findItem(R.id.nav_home).setEnabled(false);
             nvDrawerMenu.findItem(R.id.nav_map).setEnabled(true);
             nvDrawerMenu.findItem(R.id.nav_profile).setEnabled(true);
-            nvDrawerMenu.findItem(R.id.nav_settings).setEnabled(true);
             nvDrawerMenu.findItem(R.id.nav_about).setEnabled(true);
         } else {
             /* account does not exists; show signup */
@@ -165,7 +160,6 @@ public class Main extends Base implements
             nvDrawerMenu.findItem(R.id.nav_home).setEnabled(true);
             nvDrawerMenu.findItem(R.id.nav_map).setEnabled(false);
             nvDrawerMenu.findItem(R.id.nav_profile).setEnabled(false);
-            nvDrawerMenu.findItem(R.id.nav_settings).setEnabled(false);
             nvDrawerMenu.findItem(R.id.nav_about).setEnabled(true);
         }
 
