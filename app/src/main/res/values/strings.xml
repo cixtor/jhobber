@@ -27,8 +27,10 @@
     <string name="logout_title">Jhobber — Log Out</string>
     <string name="logout_warning">All the data associated to your profile will be deleted from your phone. If you log into the app once again, the data will be re-downloaded from LinkedIn.</string>
     <string name="logout_success">Profile data has been deleted.</string>
+    <string name="job_search_hint">e.g. Software Engineer</string>
     <string name="gps_unavailable">Geo location service is unavailable.</string>
     <string name="gps_you_are_here">YOU ARE HERE</string>
+    <string name="search">Search</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 </resources>

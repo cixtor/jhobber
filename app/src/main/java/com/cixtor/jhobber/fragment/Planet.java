@@ -7,10 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.cixtor.jhobber.R;
 import com.cixtor.jhobber.activity.Main;
+import com.cixtor.jhobber.model.Job;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,8 +27,15 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Planet extends Fragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+public class Planet extends Fragment implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener, View.OnClickListener {
     private Main parent;
+    private TextView mJobQuery;
+    private Button mJobSearch;
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
     private OnFragmentInteractionListener mListener;
@@ -48,6 +61,11 @@ public class Planet extends Fragment implements OnMapReadyCallback, GoogleMap.On
         }
 
         View v = inflater.inflate(R.layout.fragment_planet, container, false);
+
+        mJobQuery = v.findViewById(R.id.jobQuery);
+        mJobSearch = v.findViewById(R.id.jobSearch);
+
+        mJobSearch.setOnClickListener(this);
 
         if (mMapFragment == null) {
             mMapFragment = SupportMapFragment.newInstance();
@@ -92,8 +110,6 @@ public class Planet extends Fragment implements OnMapReadyCallback, GoogleMap.On
                     .target(gps)
                     .build();
 
-            mGoogleMap.clear();
-
             mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
 
             mGoogleMap.setOnCameraIdleListener(this);
@@ -104,18 +120,83 @@ public class Planet extends Fragment implements OnMapReadyCallback, GoogleMap.On
 
     @Override
     public void onCameraIdle() {
-        LatLngBounds current = mGoogleMap.getProjection().getVisibleRegion().latLngBounds;
-
-        Toast.makeText(parent, current.toString(), Toast.LENGTH_SHORT).show();
-
-        this.drawMapMarker(GOOGLE_MAP_LATITUDE, GOOGLE_MAP_LONGITUDE);
+        this.triggerJobSearch();
     }
 
-    private void drawMapMarker(double latitude, double longitude) {
-        LatLng gps = new LatLng(latitude, longitude);
+    @Override
+    public void onClick(View v) {
+        this.triggerJobSearch();
+    }
+
+    private void triggerJobSearch() {
+        mGoogleMap.clear();
+
+        mJobSearch.setEnabled(false);
+
+        parent.hideKeyboard(mJobQuery);
+
+        LatLngBounds current = mGoogleMap.getProjection().getVisibleRegion().latLngBounds;
+
+        JsonObjectRequest obj = new JsonObjectRequest(
+                Request.Method.GET,
+                parent.WEB_SERVICE + "/jobs"
+                        + "?query=" + mJobQuery.getText()
+                        + "&sw_lat=" + current.southwest.latitude
+                        + "&sw_lon=" + current.southwest.longitude
+                        + "&ne_lat=" + current.northeast.latitude
+                        + "&ne_lon=" + current.northeast.longitude,
+                null,
+                this.getJobsResponseListener(parent, this),
+                this.getJobsErrorListener(parent, this)
+        );
+
+        parent.addRequestToQueue(obj);
+    }
+
+    private Response.Listener<JSONObject> getJobsResponseListener(final Main parent, final Planet here) {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject res) {
+                mJobSearch.setEnabled(true);
+
+                try {
+                    here.addJobsToTheMap(res);
+                } catch (JSONException e) {
+                    parent.alert(e.getMessage());
+                }
+            }
+        };
+    }
+
+    public Response.ErrorListener getJobsErrorListener(final Main parent, final Planet here) {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                /* https://stackoverflow.com/a/24700973 */
+                parent.alert(error.toString());
+                mJobSearch.setEnabled(false);
+            }
+        };
+    }
+
+    private void addJobsToTheMap(JSONObject res) throws JSONException {
+        if (!res.getBoolean("ok")) {
+            parent.alert(res.getString("error"));
+            return;
+        }
+
+        ArrayList<Job> jobs = parent.collectJobsData(res);
+
+        for (Job job : jobs) {
+            this.drawMapMarker(job);
+        }
+    }
+
+    private void drawMapMarker(Job job) {
+        LatLng gps = new LatLng(job.getLatitude(), job.getLongitude());
 
         MarkerOptions options = new MarkerOptions()
-                .title(getString(R.string.gps_you_are_here))
+                .title(job.getCompany() + "\n" + job.getTitle())
                 .position(gps);
 
         mGoogleMap.addMarker(options);

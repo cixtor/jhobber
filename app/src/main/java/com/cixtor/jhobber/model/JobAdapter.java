@@ -34,7 +34,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobViewHolder> {
         new DownloadImageTask(parent, v.getImage()).execute(job.getImage());
 
         v.getCompany().setText(job.getCompany());
-        v.getOccupation().setText(job.getOccupation());
+        v.getOccupation().setText(job.getTitle());
         v.getSkills().setText(job.getSkills());
     }
 
