@@ -4,6 +4,7 @@
     android:layout_height="@dimen/job_height"
     android:paddingLeft="@dimen/job_padding"
     android:paddingRight="@dimen/job_padding"
+    android:paddingTop="@dimen/job_padding"
     android:background="?android:attr/selectableItemBackground">
     <ImageView
         android:id="@+id/jobImage"
@@ -28,6 +29,9 @@
             android:id="@+id/jobOccupation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textSize="@dimen/job_occupation_size"
             android:textColor="@color/black" />
 
@@ -35,6 +39,9 @@
             android:id="@+id/jobSkills"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textSize="@dimen/job_skills_size"
             android:textColor="@color/black" />
     </LinearLayout>

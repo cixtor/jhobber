@@ -98,9 +98,11 @@ public class Profile extends Fragment {
     }
 
     private void loadJobPosts(View v) {
+        String query = parent.getUserAccount().getOccupation();
+
         JsonObjectRequest obj = new JsonObjectRequest(
                 Request.Method.GET,
-                parent.WEB_SERVICE + "/jobs",
+                parent.WEB_SERVICE + "/jobs?query=" + query,
                 null,
                 this.getJobsResponseListener(parent, this),
                 this.getJobsErrorListener(parent, this)
