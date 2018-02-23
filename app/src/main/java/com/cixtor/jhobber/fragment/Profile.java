@@ -18,14 +18,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.cixtor.jhobber.R;
 import com.cixtor.jhobber.activity.Main;
 import com.cixtor.jhobber.model.DownloadImageTask;
-import com.cixtor.jhobber.model.Job;
 import com.cixtor.jhobber.model.JobAdapter;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class Profile extends Fragment {
 

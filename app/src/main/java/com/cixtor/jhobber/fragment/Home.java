@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,8 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Home extends Fragment implements View.OnClickListener {
-    public final String TAG = "JHOBBER_HOME";
-
     private Main parent;
     private OnFragmentInteractionListener mListener;
     private EditText mSignupUsername;
