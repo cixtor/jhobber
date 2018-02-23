@@ -1,5 +1,5 @@
 
-![activities](http://localhost:5428/pressimage.png)
+![activities](pressimage.png)
 
 Android application to allow people to apply for jobs available in their current city based on their LinkedIn profile.
 
@@ -26,7 +26,7 @@ The application was developed with zero previous knowledge of Android in +40 hou
                                          └────────────────────────────────────┘ 
 ```
 
-<img src="http://localhost:5428/animation.gif" align="right">
+<img src="animation.gif" align="right">
 
 ### Activity: Loading Screen
 
