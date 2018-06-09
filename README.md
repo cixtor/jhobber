@@ -1,57 +1,63 @@
 
-![activities](pressimage.png)
+![](resources/pressimage.png)
 
-Android application to allow people to apply for jobs available in their current city based on their LinkedIn profile.
+Android application to allow people to apply for jobs available in their city based on their LinkedIn profile.
 
-The application was developed with zero previous knowledge of Android in +40 hours.
+**Note:** Both the mobile application and the corresponding [API service](https://github.com/cixtor/jhobberapi) _(written in Go - golang)_ were developed in approximately 48+ hours without previous knowledge of Android development as part of a hackaton in Vancouver.
 
-### Project Architecture
+## Project Architecture
 
 ```
-                                                        INTERNET                
-                                         ┌────────────────────────────────────┐ 
-                                         │ ┌─────────────┐                    │ 
-                       Android SDK       │ │    Cache    │                    │ 
-                   ┌─────────────────┐   │ └──────┬──────┘                    │ 
-                   │ ┌─────────────┐ │   │        │           ┌─────────────┐ │ 
-                   │ │ Jhobber App │ │   │        ▼        ┌─▶│  LinkedIn   │ │ 
- ┌─────────────┐   │ └─────────────┘ │   │ ┌─────────────┐ │  └─────────────┘ │ 
- │ User Events ├──▶│        ▲        ├──▶│ │ API Service ├─┤                  │ 
- └─────────────┘   │ ┌──────┴──────┐ │   │ └─────────────┘ │  ┌─────────────┐ │ 
-                   │ │ SharedPrefs │ │   │        ▲        └─▶│ Whoishiring │ │ 
-                   │ └─────────────┘ │   │        │           └─────────────┘ │ 
-                   └─────────────────┘   │ ┌──────┴──────┐                    │ 
-                                         │ │  SQLite DB  │                    │ 
-                                         │ └─────────────┘                    │ 
-                                         └────────────────────────────────────┘ 
+         ┌────────────────────────────────────────────────────────────────────────────────┐
+         │                                                        INTERNET                │
+         │                                         ┌────────────────────────────────────┐ │
+         │                                         │ ┌─────────────┐                    │ │
+         │                       Android SDK       │ │    Cache    │                    │ │
+         │                   ┌─────────────────┐   │ └──────┬──────┘                    │ │
+         │                   │ ┌─────────────┐ │   │        │           ┌─────────────┐ │ │
+         │                   │ │ Jhobber App │ │   │        ▼        ┌─▶│  LinkedIn   │ │ │
+         │ ┌─────────────┐   │ └─────────────┘ │   │ ┌─────────────┐ │  └─────────────┘ │ │
+         │ │ User Events ├──▶│        ▲        ├──▶│ │ API Service ├─┤                  │ │
+         │ └─────────────┘   │ ┌──────┴──────┐ │   │ └─────────────┘ │  ┌─────────────┐ │ │
+         │                   │ │ SharedPrefs │ │   │        ▲        └─▶│ Whoishiring │ │ │
+         │                   │ └─────────────┘ │   │        │           └─────────────┘ │ │
+         │                   └─────────────────┘   │ ┌──────┴──────┐                    │ │
+         │                                         │ │  SQLite DB  │                    │ │
+         │                                         │ └─────────────┘                    │ │
+         │                                         └────────────────────────────────────┘ │
+         └────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-<img src="animation.gif" align="right">
+**Note:** The source code for the API service written in Go (golang) is [available here](https://github.com/cixtor/jhobberapi).
 
-### Activity: Loading Screen
+---
 
-The entry point of the application. It includes the logo of the app in the center of the screen. Background color that — idealy — transitions among different pastel colors _(non-noticeable but present)_ and a small text indicating the processes that are currently running. The profile information and additional data will be pre-loaded in this creen:
+![](resources/screenshot.png)
 
-* Status of the remote web service
-* List of featured job advertisements
-* Potentially the user profile details
-* Geo location data to curate the matches
+---
 
-## Activity: Map
+## Adaptive Icons
 
-Borrowing the idea from this project — https://whoishiring.io/ — this activity will display a map with all the potential matches for the user in the surrounding area. The initial search will take the current position of the user _(after having requested permission to geo-locate their phone)_ and filter the jobs in a 100km radius. Markers or little dots will denotate the position of the companies in the map.
+Android 8.0 (API level 26) introduces adaptive launcher icons, which can display a variety of shapes across different device models. For example, an adaptive launcher icon can display a circular shape on one OEM device, and display a squircle on another device. Each device OEM provides a mask, which the system then uses to render all adaptive icons with the same shape. Adaptive launcher icons are also used in shortcuts, the Settings app, sharing dialogs, and the overview screen.
 
-**NOTE:** Remote jobs affect the results as the geo-location of the company offices will not correlate with the current position of the user. For this case, I suggest to find the name of the city where the user is located and position all the remote/relocation jobs in the epicenter of the city.
+Ref: [Android Developers Documentation - Adaptive Icons](https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive)
 
-## Activity: Profile
+| Layers | Round Icon | Square Icon | Simulation |
+|--------|------------|-------------|------------|
+| <img src="resources/iconlayers.gif" width="200"> | <img src="resources/iconcircle.png" width="200"> | <img src="resources/iconsquare.png" width="200"> | <img src="resources/iconsimula.gif" width="200"> |
 
-This activity contains a brief summary of the user profile and a list of jobs that the user have liked and also a list of jobs that the user have matched with. These two lists will be separated into a tabbed panel for accessibility. The activity will be divided in two sections, the upper part contains a blurred background image that will potentially be the avatar associated to the LinkedIn profile, on top a circle with the non-blurred version of the avatar and below the user's first and last name. The lower panel contains a tabbed container with a list where each item contains an optional image with the logo of the company and in front the advertised job title.
+---
 
-## Activity: Settings
+<img src="resources/animation.gif" align="left">
 
-* Option to connect the user's LinkedIn account
-* Option to configure the filters for the job search
-* Option to upload a single PDF file with the resume
-* Option to delete all the data related to the account
-* Option to upload a custom background picture
-* Option to upload a custom profile picture
+## Activities (aka. Android Screens)
+
+The entry point of the app, a splash screen, shows a blue moon and an animation simulating the waves of the sea. While the application is loading, it connects with the remote API service and downloads a small set of data to populate the initial screens, including the map and the profile view.
+
+The map is generated using the Google Maps SDK with center points on the location provided by the phone if the user provided access to the Geo Location Services. The markers are placed according to the information provided by another API service using [Elastic Search](https://en.wikipedia.org/wiki/Elasticsearch).
+
+The profile view is populated using data obtained from LinkedIn using a proxy, the proxy in this case is simulating the interaction of a real user via the custom API service mentioned in the "Project Architecture" section. This allows the application to take advantage of features that are available in the web version of LinkedIn but unavailable in their public API.
+
+One of the features available in the restricted API is the ability to submit your profile as a resume to the author of a job post via the "Easy Apply" button. Because the mobile application behaves exactly as a regular user, the restricted API responds to the HTTP requests the same way if you were browsing the web interface.
+
+**Note:** Only a small percentage of the code is available, this is to prevent the 3rd-party API services to shutdown access to the restricted endpoints in their respective services.
